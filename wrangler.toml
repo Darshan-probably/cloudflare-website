@@ -1,24 +1,22 @@
-name = "speechless"
+name = "speechless-web-ui"
 main = "src/index.js"
 compatibility_date = "2023-09-01"
 workers_dev = true
 
 # Add custom domain binding
-# routes = [
-#   { pattern = "music.yourdomain.com", custom_domain = true }
-# ]
-
-# KV namespace for storing static assets (optional)
-# kv_namespaces = [
-#   { binding = "ASSETS", id = "your-kv-namespace-id" }
-# ]
+#routes = [
+#  { pattern = "music.yourdomain.com", custom_domain = true }
+#]
 
 # Environment variables
-[vars]
+[
+vars
+]
 DISCORD_CLIENT_ID = "1356319675717390507"
+#MAIN_SERVER_URL = "http://localhost:8000"  # Change in production
+#DISCORD_REDIRECT_URI = "http://localhost:8787/oauth-callback"  # Change in production
+
 # The following secrets should be set using `wrangler secret put`
 # - DISCORD_CLIENT_SECRET 
 # - API_SECRET
 # - SESSION_SECRET
-# - MAIN_SERVER_URL (e.g. "https://your-main-server.com")
-# - DISCORD_REDIRECT_URI (e.g. "https://music.yourdomain.com/oauth-callback")
