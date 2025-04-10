@@ -34,14 +34,28 @@ async def now_playing_ws(websocket: WebSocket):
         try:
             while True:
                 message = await websocket.receive_text()
-                print(f"[Bot] Message received: {message[:100]}...")
-                last_now_playing = message
-                # Broadcast to all connected frontend clients.
-                for client in frontend_clients:
-                    try:
-                        await client.send_text(message)
-                    except Exception as e:
-                        print(f"Failed to send to client: {e}")
+                try:
+                    data = json.loads(message)
+                    
+                    # Handle heartbeat messages
+                    if data.get("type") == "heartbeat":
+                        # Just respond with acknowledgment
+                        await websocket.send_text(json.dumps({"type": "heartbeat_ack"}))
+                        continue
+                        
+                    # Process other messages as before
+                    print(f"[Bot] Message received: {message[:100]}...")
+                    last_now_playing = message
+                    # Broadcast to all connected frontend clients.
+                    for client in frontend_clients:
+                        try:
+                            await client.send_text(message)
+                        except Exception as e:
+                            print(f"Failed to send to client: {e}")
+                except json.JSONDecodeError:
+                    print(f"Received invalid JSON: {message[:100]}...")
+                except Exception as e:
+                    print(f"Error processing message: {e}")
         except WebSocketDisconnect:
             print("Bot disconnected.")
             bot_connection = None
