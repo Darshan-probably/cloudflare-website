@@ -4,8 +4,7 @@ compatibility_date = "2023-09-01"
 workers_dev = true
 
 # Python configuration
-compatibility_flags = ["python_workers"]  # Changed from "python" to "python_workers"
-python_pkg_reqs = ["fastapi", "httpx", "python-dotenv", "starlette", "uvicorn"]
+compatibility_flags = ["python_workers"]
 
 [build]
 command = ""  # No build command needed for Python
@@ -13,5 +12,5 @@ command = ""  # No build command needed for Python
 # Environment variables
 [vars]
 DISCORD_CLIENT_ID = "1356319675717390507"
-MAIN_SERVER_URL = "https://your-backend-server.com"  # Update this to your actual backend server
+MAIN_SERVER_URL = "https://your-backend-server.com"
 DISCORD_REDIRECT_URI = "https://speechless.darshanisadev.workers.dev/oauth-callback"
