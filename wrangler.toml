@@ -1,22 +1,27 @@
-name = "speechless-web-ui"
-main = "src/index.js"
+name = "speechless"
+main = "worker.py"
 compatibility_date = "2023-09-01"
 workers_dev = true
 
-# Add custom domain binding
-#routes = [
-#  { pattern = "music.yourdomain.com", custom_domain = true }
-#]
+# Python configuration
+compatibility_flags = ["python"]
+python_pkg_reqs = ["fastapi", "httpx", "python-dotenv", "starlette", "uvicorn"]
+
+[build]
+command = ""  # No build command needed for Python
+
+# Custom domain binding (uncomment when ready for production)
+# routes = [
+#   { pattern = "music.yourdomain.com", custom_domain = true }
+# ]
 
 # Environment variables
-[
-vars
-]
+[vars]
 DISCORD_CLIENT_ID = "1356319675717390507"
-#MAIN_SERVER_URL = "http://localhost:8000"  # Change in production
-#DISCORD_REDIRECT_URI = "http://localhost:8787/oauth-callback"  # Change in production
+MAIN_SERVER_URL = "https://your-backend-server.com"  # Update this to your actual backend server
+DISCORD_REDIRECT_URI = "https://speechless.darshanisadev.workers.dev/oauth-callback"
 
-# The following secrets should be set using `wrangler secret put`
+# The following secrets should be set using `wrangler secret put`:
 # - DISCORD_CLIENT_SECRET 
 # - API_SECRET
 # - SESSION_SECRET
