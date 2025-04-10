@@ -4,9 +4,9 @@ compatibility_date = "2023-09-01"
 workers_dev = true
 
 # Add custom domain binding
-routes = [
-  { pattern = "music.yourdomain.com", custom_domain = true }
-]
+# routes = [
+#   { pattern = "music.yourdomain.com", custom_domain = true }
+# ]
 
 # KV namespace for storing static assets (optional)
 # kv_namespaces = [
