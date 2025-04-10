@@ -1,4 +1,4 @@
-name = "speechless-web-ui"
+name = "speechless"
 main = "src/index.js"
 compatibility_date = "2023-09-01"
 workers_dev = true
