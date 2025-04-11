@@ -28,12 +28,13 @@ from app.api import router as api_router
 from app.control import router as control_router
 
 # List of allowed origins
-ALLOWED_ORIGINS = [
-    "https://music.yourdomain.com",     # Your Cloudflare Worker subdomain
-    "https://speechless-web-ui.yourusername.workers.dev",  # Workers dev domain
-    f"http://{MAIN_URL}:{PORT}"         # Local development
+# Update ALLOWED_ORIGINS in app/main.py
+ALLOWED_ORIGINS = [  
+    "https://cloudflare-website.vercel.app",
+    f"http://{MAIN_URL}:{PORT}",
+    "http://de3.bot-hosting.net:20058",  # Add your bot server
+    "https://de3.bot-hosting.net:20058"  # Add with HTTPS too just in case
 ]
-
 
 app = FastAPI()
 
