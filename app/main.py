@@ -74,10 +74,19 @@ async def lifespan(app: FastAPI):
             print(f"📡 {route.path}")
     yield
 
+# Update the root route handler to pass bot server info
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request):
     user = request.session.get("user")
-    return templates.TemplateResponse("index.html", {"request": request, "user": user})
+    return templates.TemplateResponse(
+        "index.html", 
+        {
+            "request": request, 
+            "user": user,
+            "bot_server_host": BOT_SERVER_HOST,
+            "bot_server_port": BOT_SERVER_PORT
+        }
+    )
 
 @app.get("/login")
 async def login():
