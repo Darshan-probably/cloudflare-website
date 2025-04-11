@@ -2,8 +2,7 @@
 from fastapi import APIRouter, Body, HTTPException
 from fastapi.responses import JSONResponse
 import httpx
-from app.config import API_SECRET, MAIN_URL, PORT
-
+from app.config import API_SECRET, BOT_SERVER_HOST, BOT_SERVER_PORT
 
 router = APIRouter(prefix="/control", tags=["control"])
 
@@ -14,23 +13,22 @@ async def control_action(action: str, payload: dict = Body({})):
     """
     print(f"Control command received: {action} with payload: {payload}")
     
-    # Forward the command to the bot via our API endpoint
+    # Forward the command to the bot via the bot server
     async with httpx.AsyncClient() as client:
         try:
             # Add API_SECRET to the headers
             headers = {"x-api-token": API_SECRET}
             response = await client.post(
-                f"http://{MAIN_URL}:{PORT}/forward_to_bot/{action}", 
+                f"http://{BOT_SERVER_HOST}:{BOT_SERVER_PORT}/bot/{action}", 
                 json=payload,
-                headers=headers  # Add this line
+                headers=headers
             )
             return response.json()
         except Exception as e:
-            print(f"Error forwarding command: {e}")
+            print(f"Error forwarding command to bot server: {e}")
             return {"error": str(e), "status": "failed"}
         
 
-# Keep your other functions unchanged...
 @router.post("/search")
 async def control_search(payload: dict = Body(...)):    
     """
@@ -41,38 +39,43 @@ async def control_search(payload: dict = Body(...)):
         raise HTTPException(status_code=400, detail="Missing query in payload.")
     print(f"Search query received: {query}")
     
-    # Forward the search request with the API token
+    # Forward the search request to the bot server
     async with httpx.AsyncClient() as client:
         try:
             headers = {"x-api-token": API_SECRET}
             response = await client.post(
-                f"http://{MAIN_URL}:{PORT}/forward_to_bot/search", 
+                f"http://{BOT_SERVER_HOST}:{BOT_SERVER_PORT}/bot/search", 
                 json=payload,
                 headers=headers
             )
             return response.json()
         except Exception as e:
-            print(f"Error forwarding search: {e}")
+            print(f"Error forwarding search to bot server: {e}")
             return {"error": str(e), "status": "failed"}
-    
-    # Keep your fallback code or remove it if you only want to use the forwarded response
 
-
-# In app/control.py
 @router.get("/search/suggestions")
 async def search_suggestions(query: str):
     """
-    Returns suggestions based on query.
+    Returns suggestions based on query by fetching from bot server.
     """
-    # If it's a URL, treat it differently (for YouTube, Spotify, etc.)
+    # Forward suggestion request to bot server
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.get(
+                f"http://{BOT_SERVER_HOST}:{BOT_SERVER_PORT}/search/suggestions?query={query}"
+            )
+            if response.status_code == 200:
+                return response.json()
+        except Exception as e:
+            print(f"Error fetching suggestions from bot server: {e}")
+    
+    # Fallback suggestions if bot server is unreachable
     if query.startswith("http"):
         return ["Add this URL to queue"]
     
-    # Otherwise, provide normal search suggestions
-    # Replace with your actual suggestion logic
     suggestions = [
-        f"{query} - Song 1",
-        f"{query} - Song 2",
-        f"{query} - Song 3"
+        f"{query} - Song",
+        f"{query} - Official Video",
+        f"{query} - Audio"
     ]
-    return suggestions  
+    return suggestions
