@@ -13,6 +13,12 @@ DISCORD_TOKEN_URL = "https://discord.com/api/oauth2/token"
 DISCORD_API_URL = "https://discord.com/api/users/@me"
 MAIN_URL = os.getenv("main_url")
 PORT = os.getenv("port")
+# Add these to app/config.py
+
+# Bot server configuration
+BOT_SERVER_HOST = os.getenv("BOT_SERVER_HOST", "de3.bot-hosting.net")
+BOT_SERVER_PORT = os.getenv("BOT_SERVER_PORT", "20058")
+BOT_SERVER_URL = f"{BOT_SERVER_HOST}:{BOT_SERVER_PORT}"
 # API secret used for internal authentication (e.g. WebSocket)
 API_SECRET = os.getenv("API_SECRET")  # Replace default in production
 
