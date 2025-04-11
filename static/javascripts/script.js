@@ -1,16 +1,23 @@
 // scripts.js
 // In static/javascripts/script.js - Add a reconnection mechanism:
 // Add this at the beginning of the file
+// scripts.js - Updated to connect to bot server WebSocket
 let reconnectAttempts = 0;
 const maxReconnectAttempts = 5;
 const reconnectInterval = 3000; // 3 seconds
 
 function connectWebSocket() {
+    // Get the bot server from a global variable or environment setting
+    // This should be injected by the server when rendering the template
+    const botServerHost = window.BOT_SERVER_HOST || "de3.bot-hosting.net";
+    const botServerPort = window.BOT_SERVER_PORT || "20058";
+    
+    // Connect directly to the bot server WebSocket
     const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const ws = new WebSocket(`${protocol}://${window.location.host}/ws/nowplaying`);
+    const ws = new WebSocket(`${protocol}://${botServerHost}:${botServerPort}/ws/nowplaying`);
     
     ws.onopen = () => {
-      console.log("WebSocket connected for updates.");
+      console.log("WebSocket connected to bot server for updates.");
       reconnectAttempts = 0; // Reset reconnect attempts on successful connection
       // Request current status
       ws.send(JSON.stringify({ action: "status_request" }));
@@ -37,7 +44,6 @@ function connectWebSocket() {
           if (data.duration > 0) {
               updateProgressBar(data.duration);
           }
-          // Optionally update progress bar etc.
         } else if (data.type === "queue_update") {
           // Update queue display
           const queueDiv = document.getElementById("queue");
