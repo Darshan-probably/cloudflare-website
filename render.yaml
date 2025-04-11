@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: speechless
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: CLIENT_ID
+        sync: false
+      - key: CLIENT_SECRET
+        sync: false
+      - key: REDIRECT_URI
+        sync: false
+      - key: main_url
+        sync: false
+      - key: BOT_SERVER_HOST
+        sync: false
+      - key: BOT_SERVER_PORT
+        sync: false
+      - key: API_SECRET
+        sync: false
+      - key: SESSION_SECRET
+        sync: false
