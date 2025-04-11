@@ -22,7 +22,9 @@ from app.config import (
     DISCORD_TOKEN_URL, 
     SESSION_SECRET,
     MAIN_URL,
-    PORT
+    PORT,
+    BOT_SERVER_HOST,
+    BOT_SERVER_PORT
     )
 from app.api import router as api_router
 from app.control import router as control_router
