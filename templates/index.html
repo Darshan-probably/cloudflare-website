@@ -8,9 +8,12 @@
   <link rel="icon" type="image/png" href="{{ url_for('static', path='images/Speechless.png') }}">
   <!-- CSS -->
   <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}">
-  <!-- Optional TailwindCSS CDN can be added here if you want to use it -->
+  <!-- Pass bot server config to JavaScript -->
+  <script>
+    window.BOT_SERVER_HOST = "{{ bot_server_host }}";
+    window.BOT_SERVER_PORT = "{{ bot_server_port }}";
+  </script>
 </head>
-<body>
   <!-- Navigation Bar -->
   <nav class="navbar">
     <div class="navbar-brand">Speechless</div>
